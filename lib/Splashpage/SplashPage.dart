@@ -25,7 +25,7 @@ class SplashScreenState extends State<SplashPage> {
           width: 250,
           height: 250,
           child: const Image(
-            image: AssetImage('assets/images/racepayFullLogo.jpeg'),
+            image: AssetImage('assets/images/collage_logo.png'),
           ),
         ),
       ),

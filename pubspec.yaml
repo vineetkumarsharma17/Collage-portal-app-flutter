@@ -23,10 +23,14 @@ environment:
 dependencies:
   date_field: ^2.0.1
   image_picker: ^0.8.4
+  flutter_barcode_scanner: ^2.0.0
   shared_preferences: ^2.0.0-nullsafety.1
   http: ^0.13.3
+  qr_flutter: ^4.0.0
   carousel_slider: ^4.0.0
   otp_text_field: ^1.1.1
+  vertical_tabs: ^0.2.0
+
   flutter:
     sdk: flutter
 

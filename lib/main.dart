@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_portal_app/HomePage/Admin_Portal/Faculty_Attendance_card/FacultyList/facultyList.dart';
 import 'package:student_portal_app/Splashpage/SplashPage.dart';
 
 void main() {
@@ -9,7 +10,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp(theme: ThemeData(
+      scaffoldBackgroundColor: Color(0xFFBCEBEB),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Color(0xFF097272)
+      )
+    ),
       debugShowCheckedModeBanner: false,
       home: SplashPage(),
     );

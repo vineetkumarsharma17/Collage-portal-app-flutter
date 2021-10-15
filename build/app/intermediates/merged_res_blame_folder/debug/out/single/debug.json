@@ -8,12 +8,12 @@
         "source": "D:\\Video lecture\\Programming language\\Flutter\\Android app\\student_portal_app\\android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
     },
     {
-        "merged": "D:\\Video lecture\\Programming language\\Flutter\\Android app\\student_portal_app\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "D:\\Video lecture\\Programming language\\Flutter\\Android app\\student_portal_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
-    },
-    {
         "merged": "D:\\Video lecture\\Programming language\\Flutter\\Android app\\student_portal_app\\build\\app\\intermediates\\res\\merged\\debug\\drawable-v21_launch_background.xml.flat",
         "source": "D:\\Video lecture\\Programming language\\Flutter\\Android app\\student_portal_app\\android\\app\\src\\main\\res\\drawable-v21\\launch_background.xml"
+    },
+    {
+        "merged": "D:\\Video lecture\\Programming language\\Flutter\\Android app\\student_portal_app\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "D:\\Video lecture\\Programming language\\Flutter\\Android app\\student_portal_app\\android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
     {
         "merged": "D:\\Video lecture\\Programming language\\Flutter\\Android app\\student_portal_app\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",

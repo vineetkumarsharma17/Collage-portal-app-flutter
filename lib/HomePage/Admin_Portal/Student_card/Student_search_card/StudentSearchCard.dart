@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'studentAlldetail/studentInfo.dart';
+
 class StudentSearchDetails extends StatefulWidget {
   StudentSearchDetails({Key? key}) : super(key: key);
-
   @override
   _StudentSearchDetailsState createState() => _StudentSearchDetailsState();
 }
@@ -158,55 +159,59 @@ class _StudentSearchDetailsState extends State<StudentSearchDetails> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: studentData == [] ? 0 : studentData.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 10),
-                            margin: EdgeInsets.symmetric(vertical: 2.5),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFFFFFF),
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.grey,
-                                    child: Icon(
-                                      Icons.person_outlined,
-                                      color: Color(0xFFFFFFFF),
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context)=>StudentAllinformation(studentData[index]["regno"])));
+                      },
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 10),
+                              margin: EdgeInsets.symmetric(vertical: 2.5),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFFFFFFF),
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.grey,
+                                      child: Image.network(studentData[index]["pic"]),
                                     ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 20),
-                                  child: Column(
-                                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5),
-                                        child: Text(
-                                          studentData[index]["name"],
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 20),
+                                    child: Column(
+                                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 5),
+                                          child: Text(
+                                            studentData[index]["name"],
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Text(studentData[index]["class"]),
-                                    ],
-                                  ),
-                                )
-                              ],
+                                        Text(studentData[index]["regno"]),
+                                        Text(studentData[index]["class"]),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   },
