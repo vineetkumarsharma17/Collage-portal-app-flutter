@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
       )
     ),
       debugShowCheckedModeBanner: false,
-      // home: SplashPage(),
-      home: FacultyLogIn(),
+      home: SplashPage(),
+      // home: FacultyLogIn(),
     );
   }
 }

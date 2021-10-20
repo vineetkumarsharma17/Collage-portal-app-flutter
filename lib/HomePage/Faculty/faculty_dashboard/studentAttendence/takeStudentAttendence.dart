@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:student_portal_app/component/alertdilog.dart';
 
 class TakeStudentAttendence extends StatefulWidget {
   TakeStudentAttendence({Key? key}) : super(key: key);
@@ -11,18 +13,11 @@ class TakeStudentAttendence extends StatefulWidget {
 
 class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
   bool isLoading = false;
-  bool isLoadingPromote = false;
-  Map<String, bool> countToValue = <String, bool>{};
+  bool isuploadingAttendence = false;
+  Map<String, bool> studentAtendance = <String, bool>{};
   String error = "";
-  String? promoteSession;
-  String? promoteClass;
-  String? currentSession;
   String? currentClass;
-  List sessionList = [
-    "2019-2020",
-    "2020-2021",
-    "2021-2022",
-  ];
+  String present='';
   List classList = [
     "Pre-NC",
     "NC",
@@ -42,9 +37,9 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
     "12th",
   ];
   List? searchStudentList;
-  List<Map> presentStudent=<Map>[];
 
   Future searchstudentInfo() async {
+    studentAtendance.clear();
     if (currentClass!.isEmpty) {
       setState(() {
         isLoading = false;
@@ -76,6 +71,48 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
       } else {
         setState(() {
           error = "Student's Details is not valid in the database";
+          isLoading = false;
+        });
+      }
+    }
+  }
+  Future uploadAttendance() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (studentAtendance==null) {
+      setState(() {
+        isLoading = false;
+        error = "Please upload at least one attendance!";
+      });
+    } else {
+      setState(() {
+        error = "";
+        isLoading = true;
+      });
+      var data = {
+        "class": currentClass!,
+        "section":"A",
+        "subject":"math",
+        "period":"1st",
+        "fid":prefs.getString("fregNo")
+      };
+
+      /// Start App API Calls
+      var response = await http.post(
+          Uri.parse(
+              "http://sniic.co.in/admin/school_app/student_attendance.php"),
+          body: json.encode(data));
+      var obj = jsonDecode(response.body);
+      if (obj["result"] == 'S') {
+        print(obj);
+        showMyDialog("Success", "Attendence Succefully uploaded", context
+        ).then((value) => Navigator.pop(context));
+        // setState(() {
+        //   error = "";
+        //   isLoading = false;
+        // });
+      } else {
+        setState(() {
+          error = "Attendense upload failed.";
           isLoading = false;
         });
       }
@@ -215,21 +252,21 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
                         ),
                         subtitle: Text(searchStudentList![index]["srno"]),
                         selected:
-                        countToValue[searchStudentList![index]["srno"]] ??
+                        studentAtendance[searchStudentList![index]["regno"]] ??
                             false,
                         autofocus: true,
                         activeColor: Colors.green,
                         checkColor: Colors.white,
                         //activeColor: Colors.red,
                         value:
-                        countToValue[searchStudentList![index]["srno"]] ??
+                        studentAtendance[searchStudentList![index]["regno"]] ??
                             false,
                         onChanged: (value) {
                           print(value);
                           setState(() {
-                            countToValue[searchStudentList![index]["srno"]] =
+                            studentAtendance[searchStudentList![index]["regno"]] =
                             value!;
-                            print(countToValue);
+                            print(studentAtendance);
                             // print(value);
                           });
                         },
@@ -237,6 +274,9 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
                     );
                   },
                 ),
+              ),
+              SizedBox(
+                height: 10,
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
@@ -250,11 +290,16 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
                     ),
                   ),
                   onPressed: () {
-
+                    present='';
+                    for (var key in studentAtendance.keys) {
+                      if(studentAtendance[key]==true)
+                      present+=key.toString()+",";
+                    }
+                    uploadAttendance();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
-                    child: isLoadingPromote != false
+                    child: isuploadingAttendence != false
                         ? Text(
                       "Loading.....",
                       style: TextStyle(
@@ -290,7 +335,7 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
     /// Start App API Calls
     var response = await http.post(
         Uri.parse(
-            "http://sniic.co.in/admin/school_app/student_attendance.php"),
+            "http://sniic.co.in/admin/school_app/login/faculty_login_verification.php"),
         body: json.encode(data));
     var obj = jsonDecode(response.body);
     if (obj["result"] == 'S') {

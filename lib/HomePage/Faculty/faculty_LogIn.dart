@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-//import 'package:shared_preferences/shared_preferences.dart';
-import 'package:student_portal_app/HomePage/Admin_Portal/AdminPortal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_portal_app/HomePage/Faculty/faculty_dashboard/facultyDashboard.dart';
 
 class FacultyLogIn extends StatefulWidget {
@@ -13,9 +11,15 @@ class FacultyLogIn extends StatefulWidget {
   _FacultyLogInState createState() => _FacultyLogInState();
 }
 class _FacultyLogInState extends State<FacultyLogIn> {
+  void initState(){
+    super.initState();
+    check_if_already_login();
+  }
   bool isloading = false;
   String error = "";
   var obj;
+  late SharedPreferences Facultylogindata;
+  late bool loginstatus;
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -24,7 +28,8 @@ class _FacultyLogInState extends State<FacultyLogIn> {
       setState(() {
         error = "Please Filled All Empty Fields";
       });
-    } else {
+    }
+    else {
       setState(() {
         error = "";
         isloading = true;
@@ -41,32 +46,49 @@ class _FacultyLogInState extends State<FacultyLogIn> {
       // Starting App API Call.
       var response = await http.post(
           Uri.parse(
-              "http://sniic.co.in/admin/school_app/login_verification.php"),
+              "http://sniic.co.in/admin/school_app/login/faculty_login_verification.php"),
           body: json.encode(data));
 
       // Getting Server response into variable.
       setState(() {
         obj = jsonDecode(response.body);
       });
-
-      if (obj['status'] == "Active") {
+      if (obj['result'] == "S") {
         setState(() {
           isloading = false;
         });
-        // String regno = obj['regno'];
-        // print(regno);
-        // SharedPreferences pref = await SharedPreferences.getInstance();
-        // await pref.setString("regNo", regno);
+        String id = obj['id'];
+        Facultylogindata = await SharedPreferences.getInstance();
+        await Facultylogindata.setString("fregNo", id);
+        await Facultylogindata.setBool('flogin', true);
+        await Facultylogindata.setString("fname", obj["name"]);
+        await Facultylogindata.setString("femptype", obj["emptype"]);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AdminPortalPage()));
+            .push(MaterialPageRoute(builder: (context) => FacultyDashboard())
+        ).then((value) => Navigator.pop(context));
       } else {
         setState(() {
           isloading = false;
           error =
-          "Student Providing Details are invalid So please provide valid details";
+          "Username or password are invalid";
         });
       }
     }
+  }
+  void  check_if_already_login() async {
+    Facultylogindata = await SharedPreferences.getInstance();
+    loginstatus = (Facultylogindata.getBool('flogin') ?? true);
+    if (loginstatus == true) {
+      Navigator.pushReplacement(
+          context, new MaterialPageRoute(builder: (context) => FacultyDashboard()));
+    }
+  }
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -204,12 +226,12 @@ class _FacultyLogInState extends State<FacultyLogIn> {
                               minWidth: double.infinity,
                               child: MaterialButton(
                                 onPressed: () {
-                                  //loginForm();
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => FacultyDashboard(),
-                                    ),
-                                  );
+                                  loginForm();
+                                  // Navigator.of(context).push(
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => FacultyDashboard(),
+                                  //   ),
+                                  // );
                                 },
                                 child: (isloading == true
                                     ? Text(

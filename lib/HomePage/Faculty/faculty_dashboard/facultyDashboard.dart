@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_portal_app/HomePage/Admin_Portal/Faculty_Attendance_card/FacultyAttendance.dart';
 import 'package:student_portal_app/HomePage/Admin_Portal/Faculty_Card/FacultyCard.dart';
 import 'package:student_portal_app/HomePage/Admin_Portal/Fees_Card/AdminFeesCard.dart';
 import 'package:student_portal_app/HomePage/Admin_Portal/Student_card/StudentCard.dart';
+import 'package:student_portal_app/HomePage/Faculty/faculty_LogIn.dart';
 
 import 'studentAttendence/takeStudentAttendence.dart';
 //import 'package:student_portal_app/HomePage/Student_Portal/SliderPage/SliderPages.dart';
@@ -20,16 +22,46 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child:ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: const Text('Logout'),
+              onTap: () async{
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setBool('flogin',false);
+                Navigator.push(context,MaterialPageRoute(builder: (context)=>FacultyLogIn())
+                ).then((value) => Navigator.pop(context));
+              },
+            ),
+            ListTile(
+              title: const Text('About us'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      ),
       //backgroundColor: Color(0xFFC0C9BF),
       appBar: AppBar(
         elevation: 0.0,
         // backgroundColor: Color(0xFFC0C9BF),
         //backgroundColor: Colors.grey[200],
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {},
-          tooltip: 'Menu',
-        ),
+        // leading: IconButton(
+        //   icon: Icon(Icons.menu),
+        //   onPressed: () {},
+        //   tooltip: 'Menu',
+        // ),
         title: Text("Faculty"),
         actions: [
           Padding(
@@ -141,28 +173,6 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
                                         ),
                                       ),
                                     ),
-                                    // InkWell(
-                                    //   onTap: () {},
-                                    //   child: Container(
-                                    //     width: MediaQuery.of(context).size.width * 0.27,
-                                    //     child: Column(
-                                    //       children: [
-                                    //         Icon(Icons.school_rounded),
-                                    //         Padding(
-                                    //           padding: const EdgeInsets.symmetric(vertical: 10),
-                                    //           child: Text(
-                                    //             "Student List",
-                                    //             style: TextStyle(
-                                    //               fontSize: 16,
-                                    //               color: Colors.white,
-                                    //             ),
-                                    //             textAlign: TextAlign.center,
-                                    //           ),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -170,64 +180,6 @@ class _FacultyDashboardState extends State<FacultyDashboard> {
                             SizedBox(
                               height: 20,
                             ),
-                            // Container(
-                            //   child: Row(
-                            //     crossAxisAlignment: CrossAxisAlignment.start,
-                            //     //mainAxisAlignment: MainAxisAlignment.start,
-                            //     children: [
-                            //       InkWell(
-                            //         onTap: () {
-                            //           // Navigator.of(context).push(MaterialPageRoute(
-                            //           //     builder: (context) => PromoteStudent()));
-                            //         },
-                            //         child: Container(
-                            //           width: MediaQuery.of(context).size.width * 0.3,
-                            //           child: Padding(
-                            //             padding: const EdgeInsets.only(left: 12),
-                            //             child: Column(
-                            //               children: [
-                            //                 Icon(Icons.school_rounded),
-                            //                 Padding(
-                            //                   padding: const EdgeInsets.symmetric(vertical: 10),
-                            //                   child: Text(
-                            //                     "Promote Student",
-                            //                     style: TextStyle(
-                            //                       fontSize: 16,
-                            //                       color: Colors.white,
-                            //                     ),
-                            //                     textAlign: TextAlign.center,
-                            //                   ),
-                            //                 ),
-                            //               ],
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ),
-                            //       InkWell(
-                            //         onTap: () {},
-                            //         child: Container(
-                            //           width: MediaQuery.of(context).size.width * 0.3,
-                            //           child: Column(
-                            //             children: [
-                            //               Icon(Icons.school_rounded),
-                            //               Padding(
-                            //                 padding: const EdgeInsets.symmetric(vertical: 10),
-                            //                 child: Text(
-                            //                   "Today Present Student Classwise",
-                            //                   style: TextStyle(
-                            //                     fontSize: 16,
-                            //                     color: Colors.white,
-                            //                   ),
-                            //                   textAlign: TextAlign.center,
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
