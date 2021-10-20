@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
         // SharedPreferences pref = await SharedPreferences.getInstance();
         // await pref.setString("regNo", regno);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AdminPortal()));
+            .push(MaterialPageRoute(builder: (context) => AdminPortalPage()));
       } else {
         setState(() {
           isloading = false;

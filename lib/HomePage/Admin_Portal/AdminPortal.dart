@@ -5,16 +5,7 @@ import 'package:student_portal_app/HomePage/Admin_Portal/Fees_Card/AdminFeesCard
 import 'package:student_portal_app/HomePage/Admin_Portal/Student_card/StudentCard.dart';
 //import 'package:student_portal_app/HomePage/Student_Portal/SliderPage/SliderPages.dart';
 
-class AdminPortal extends StatelessWidget {
-  const AdminPortal({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AdminPortalPage(),
-    );
-  }
-}
 
 class AdminPortalPage extends StatefulWidget {
   AdminPortalPage({Key? key}) : super(key: key);
@@ -27,10 +18,10 @@ class _AdminPortalPageState extends State<AdminPortalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFC0C9BF),
+      //backgroundColor: Color(0xFFC0C9BF),
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Color(0xFFC0C9BF),
+       // backgroundColor: Color(0xFFC0C9BF),
         //backgroundColor: Colors.grey[200],
         leading: IconButton(
           icon: Icon(Icons.menu),

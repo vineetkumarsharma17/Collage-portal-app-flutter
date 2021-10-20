@@ -30,7 +30,7 @@ class DashboardPage extends StatelessWidget {
                             //loginForm();
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => AdminPortal(),
+                                builder: (context) => AdminPortalPage(),
                               ),
                             );
                           },

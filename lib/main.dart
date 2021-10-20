@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:student_portal_app/HomePage/Admin_Portal/Faculty_Attendance_card/FacultyList/facultyList.dart';
+import 'package:student_portal_app/HomePage/Faculty/faculty_LogIn.dart';
 import 'package:student_portal_app/Splashpage/SplashPage.dart';
+
+import 'HomePage/Admin_Portal/Fees_Card/upload_Expenses_Request/upload_expenses_request.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +20,8 @@ class MyApp extends StatelessWidget {
       )
     ),
       debugShowCheckedModeBanner: false,
-      home: SplashPage(),
+      // home: SplashPage(),
+      home: FacultyLogIn(),
     );
   }
 }

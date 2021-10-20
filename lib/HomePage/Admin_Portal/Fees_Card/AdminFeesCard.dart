@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_portal_app/HomePage/Admin_Portal/Fees_Card/Submit_fees/SubmitFeesInfo.dart';
+import 'package:student_portal_app/HomePage/Admin_Portal/Fees_Card/upload_Expenses_Request/upload_expenses_request.dart';
 
 class AdminFeesCardSlab extends StatefulWidget {
   AdminFeesCardSlab({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class _AdminFeesCardSlabState extends State<AdminFeesCardSlab> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color(0xFF36AC71),
+      color: Colors.orange,
       elevation: 2.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -142,6 +143,46 @@ class _AdminFeesCardSlabState extends State<AdminFeesCardSlab> {
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (builder) => UploadExpensRequest()));
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.27,
+                              child: Column(
+                                children: [
+                                  Icon(Icons.school_rounded),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 10),
+                                    child: Text(
+                                      "Upload Expense Request",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+
+
+                        ],
                       ),
                     ),
                   ),

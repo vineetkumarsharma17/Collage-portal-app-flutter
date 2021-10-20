@@ -14,7 +14,7 @@ class _StudentSlabCardState extends State<StudentSlabCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color(0xFF36AC71),
+      color: Colors.orange,
       elevation: 2.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
