@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
-import 'studentAlldetail/studentInfo.dart';
+import 'package:student_portal_app/HomePage/Admin_Portal/Student_card/Student_search_card/studentAlldetail/studentDetail.dart';
 
 class StudentSearchDetails extends StatefulWidget {
   StudentSearchDetails({Key? key}) : super(key: key);
@@ -180,7 +179,8 @@ class _StudentSearchDetailsState extends State<StudentSearchDetails> {
                                   Container(
                                     child: CircleAvatar(
                                       backgroundColor: Colors.grey,
-                                      child: Image.network(studentData[index]["pic"]),
+                                      // child: Image.network(studentData[index]["pic"]),
+                                      child: Icon(Icons.person),
                                     ),
                                   ),
                                   Padding(

@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-//import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_portal_app/HomePage/Admin_Portal/AdminPortal.dart';
-import 'package:student_portal_app/HomePage/Faculty/faculty_dashboard/facultyDashboard.dart';
 
 import 'Director_dashboard/facultyDashboard.dart';
 
 class DirectorLogIn extends StatefulWidget {
   DirectorLogIn({Key? key}) : super(key: key);
-
   @override
   _DirectorLogInState createState() => _DirectorLogInState();
 }
@@ -20,7 +16,6 @@ class _DirectorLogInState extends State<DirectorLogIn> {
   var obj;
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
   Future loginForm() async {
     if (_usernameController.text.isEmpty && _passwordController.text.isEmpty) {
       setState(() {

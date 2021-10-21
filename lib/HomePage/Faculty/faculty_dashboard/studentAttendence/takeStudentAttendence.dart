@@ -17,6 +17,7 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
   Map<String, bool> studentAtendance = <String, bool>{};
   String error = "";
   String? currentClass;
+  String? currentPeriod;
   String present='';
   List classList = [
     "Pre-NC",
@@ -36,14 +37,17 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
     "11th",
     "12th",
   ];
+  List period = [
+    "1st", "2nd", "3rd", "4th", "5th","6th","7th","8th","9th","10th",
+  ];
   List? searchStudentList;
 
   Future searchstudentInfo() async {
     studentAtendance.clear();
-    if (currentClass!.isEmpty) {
+    if (currentClass!.isEmpty&&currentPeriod!.isEmpty) {
       setState(() {
         isLoading = false;
-        error = "Please fill all empty fields";
+        showMyDialog("Error", "Please fill all empty fields", context);
       });
     } else {
       setState(() {
@@ -78,7 +82,7 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
   }
   Future uploadAttendance() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (studentAtendance==null) {
+    if (present=="") {
       setState(() {
         isLoading = false;
         error = "Please upload at least one attendance!";
@@ -89,10 +93,11 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
         isLoading = true;
       });
       var data = {
-        "class": currentClass!,
+        "class": currentClass,
+        "regnos":present,
         "section":"A",
         "subject":"math",
-        "period":"1st",
+        "period":currentPeriod,
         "fid":prefs.getString("fregNo")
       };
 
@@ -118,7 +123,6 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,6 +171,48 @@ class _TakeStudentAttendenceState extends State<TakeStudentAttendence> {
                               setState(() {
                                 currentClass = value.toString();
                                 print(currentClass);
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 30, bottom: 10),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Select Period:",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 50),
+                          child: DropdownButton(
+                            isExpanded: true,
+                            underline: Text(""),
+                            hint: Text("Select Period"),
+                            value: currentPeriod,
+                            items: period.map<DropdownMenuItem<String>>((e) {
+                              return DropdownMenuItem<String>(
+                                child: Text(e),
+                                value: e,
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                currentPeriod = value.toString();
+                                print(currentPeriod);
                               });
                             },
                           ),
