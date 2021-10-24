@@ -13,12 +13,30 @@ class _StudentSearchDetailsState extends State<StudentSearchDetails> {
   bool isLoading = false;
   String error = "";
   List studentData = [];
-  TextEditingController searchStudent = new TextEditingController();
+   String ?currentClass;
+  List classList = [
+    "Pre-NC",
+    "NC",
+    "UKG",
+    "KG",
+    "1st",
+    "2nd",
+    "3rd",
+    "4th",
+    "5th",
+    "6th",
+    "7th",
+    "8th",
+    "9th",
+    "10th",
+    "11th",
+    "12th",
+  ];
 
   Future<void> searchStudentDetails() async {
-    if (searchStudent.text.isEmpty) {
+    if (currentClass==null) {
       setState(() {
-        error = "Please Filled All Empty Fields";
+        error = "Please Select Class";
       });
     } else {
       setState(() {
@@ -27,10 +45,10 @@ class _StudentSearchDetailsState extends State<StudentSearchDetails> {
       });
 
       // Store all data with Param Name.
-      print("class:" + searchStudent.text);
+      print("class:" + currentClass!);
 
       var data = {
-        "class": searchStudent.text,
+        "class": currentClass,
       };
       // Starting App API Call.
       var response = await http.post(
@@ -75,30 +93,44 @@ class _StudentSearchDetailsState extends State<StudentSearchDetails> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 20),
-                //color: Color(0xFFFFFFFF),
+                margin: EdgeInsets.only(top: 30, bottom: 10),
                 decoration: BoxDecoration(
                   color: Color(0xFFFFFFFF),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                  child: TextFormField(
-                    controller: searchStudent,
-                    decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.search_rounded,
-                        color: Colors.black,
-                        size: 24,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Current Class:",
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      border: InputBorder.none,
-                      hintText: "Enter Student Class Name",
-                      hintStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 50),
+                          child: DropdownButton(
+                            isExpanded: true,
+                            underline: Text(""),
+                            hint: Text("Select Current Class"),
+                            value: currentClass,
+                            items: classList.map<DropdownMenuItem<String>>((e) {
+                              return DropdownMenuItem<String>(
+                                child: Text(e),
+                                value: e,
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                currentClass = value.toString();
+                                print(currentClass);
+                              });
+                            },
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
@@ -161,7 +193,9 @@ class _StudentSearchDetailsState extends State<StudentSearchDetails> {
                     return GestureDetector(
                       onTap: (){
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context)=>StudentAllinformation(studentData[index]["regno"])));
+                            MaterialPageRoute(builder: (context)
+                            =>StudentAllinformation(studentData[index]["regno"],
+                                studentData[index]["name"],studentData[index]["pic"])));
                       },
                       child: Container(
                         child: Column(
@@ -177,11 +211,12 @@ class _StudentSearchDetailsState extends State<StudentSearchDetails> {
                               child: Row(
                                 children: [
                                   Container(
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.grey,
-                                      // child: Image.network(studentData[index]["pic"]),
-                                      child: Icon(Icons.person),
-                                    ),
+                                    width:60,
+                                    height: 60,
+                                    child: Image.network(studentData[index]["pic"],
+                                      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                        return Icon(Icons.error_outline,size: 50,);
+                                      },),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(

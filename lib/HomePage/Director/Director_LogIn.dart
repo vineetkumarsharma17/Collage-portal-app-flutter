@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_portal_app/HomePage/Admin_Portal/AdminPortal.dart';
 
 import 'Director_dashboard/facultyDashboard.dart';
@@ -11,11 +12,22 @@ class DirectorLogIn extends StatefulWidget {
   _DirectorLogInState createState() => _DirectorLogInState();
 }
 class _DirectorLogInState extends State<DirectorLogIn> {
+  late SharedPreferences ManagerLoginData;
   bool isloading = false;
+  late bool loginstatus;
   String error = "";
   var obj;
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  void  check_if_already_login() async {
+    ManagerLoginData = await SharedPreferences.getInstance();
+    loginstatus = (ManagerLoginData.getBool('dlogin') ?? true);
+    if (loginstatus == true) {
+      Navigator.pushReplacement(
+          context, new MaterialPageRoute(builder: (context) => DirectorDashboard())).then((value) =>
+      Navigator.pop(context));
+    }
+  }
   Future loginForm() async {
     if (_usernameController.text.isEmpty && _passwordController.text.isEmpty) {
       setState(() {
@@ -26,7 +38,6 @@ class _DirectorLogInState extends State<DirectorLogIn> {
         error = "";
         isloading = true;
       });
-
       // Store all data with Param Name.
       print("Username:" + _usernameController.text);
       print("password:" + _passwordController.text);
@@ -50,17 +61,20 @@ class _DirectorLogInState extends State<DirectorLogIn> {
         setState(() {
           isloading = false;
         });
-        // String regno = obj['regno'];
-        // print(regno);
-        // SharedPreferences pref = await SharedPreferences.getInstance();
-        // await pref.setString("regNo", regno);
+        String id = obj['id'];
+        ManagerLoginData = await SharedPreferences.getInstance();
+        await ManagerLoginData.setString("dregNo", id);
+        await ManagerLoginData.setBool('dlogin', true);
+        await ManagerLoginData.setString("dname", obj["name"]);
+        await ManagerLoginData.setString("demptype", obj["emptype"]);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AdminPortalPage()));
+            .push(MaterialPageRoute(builder: (context) => DirectorDashboard())
+        ).then((value) => Navigator.pop(context));
       } else {
         setState(() {
           isloading = false;
           error =
-          "Student Providing Details are invalid So please provide valid details";
+          "User not found!";
         });
       }
     }

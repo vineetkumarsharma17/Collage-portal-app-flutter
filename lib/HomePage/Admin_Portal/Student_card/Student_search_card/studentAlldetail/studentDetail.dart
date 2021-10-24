@@ -1,40 +1,28 @@
 
 
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:student_portal_app/component/alertdilog.dart';
-import 'package:vertical_tabs/vertical_tabs.dart';
 class StudentAllinformation extends StatefulWidget {
-  String regNo;
-  StudentAllinformation(this.regNo);
+  String regNo,name,pic;
+  StudentAllinformation(this.regNo,this.name,this.pic);
 
   @override
-  _StudentAllinformationState createState() => _StudentAllinformationState(regNo);
+  _StudentAllinformationState createState() => _StudentAllinformationState(regNo,name,pic);
 }
 
 class _StudentAllinformationState extends State<StudentAllinformation> {
-  String regNo;
-  _StudentAllinformationState(this.regNo){
+  String regNo,name,pic;
+  _StudentAllinformationState(this.regNo,this.name,this.pic){
     getData();
   }
   List sibling_list=[];
-  var name=TextEditingController();
-  var rollNo=TextEditingController();
-  var className=TextEditingController();
-  var section=TextEditingController();
-  var month=TextEditingController();
-  var amount=TextEditingController();
-  var otherFee=TextEditingController();
-  var totalFee=TextEditingController();
-  var remark=TextEditingController();
   List benificiarySibling=[];
   String total_pending='0',presentClass='',fname='NA',edu_fees='0',session='NA';
   List fees_history=[],recipt_list=[],other_item_fees=[];
   List<bool> isSelected=[false,false,false,false];
-  initState(){
-    // getData();
-  }
   Future getData()async{
     print("run");
     var reg={
@@ -45,11 +33,11 @@ class _StudentAllinformationState extends State<StudentAllinformation> {
         body: json.encode(reg));
     var obj = jsonDecode(response.body);
     if (obj["result"] == 'S'){
-      print("++++++++++++++++++++++++++++++++++++++++++");
-      // print(fees_history);
-      // print(sibling_list);
-      print(obj);
-      print("++++++++++++++++++++++++++++++++++++++++++++=");
+      // print("++++++++++++++++++++++++++++++++++++++++++");
+      // // print(fees_history);
+      // // print(sibling_list);
+      // print(obj);
+      // print("++++++++++++++++++++++++++++++++++++++++++++=");
       setState(() {
         sibling_list=obj["sibling_list"];
         // benificiarySibling=obj["benificiary_sibling"];
@@ -58,15 +46,9 @@ class _StudentAllinformationState extends State<StudentAllinformation> {
         fees_history=obj["fees_history"];
         recipt_list=obj["recipt_list"];
         session=obj["session"];
-        // fname=obj["fname"];
+        fname=obj["fname"];
         edu_fees=obj["edu_fees"];
-        // other_item_fees=obj["other_item_fees"];
-        print("++++++++++++++++++++++++++++++++++++++++++");
-        // print(fees_history);
-        // print(sibling_list);
-        print(obj);
-        print("++++++++++++++++++++++++++++++++++++++++++++=");
-        //print("info");
+        other_item_fees=obj["other_item_fees"];
       });
       if(obj==null)
         showMyDialog("Server Error","Somthing went wrong ",context);
@@ -77,183 +59,137 @@ class _StudentAllinformationState extends State<StudentAllinformation> {
     color: Colors.black,
     fontSize: 15,
   );
-  Map data=    {
-    "name":"Vineet",
-    "class":"5",
-    "regno":"1213123133123",
-    "srno":"848",
-    "section": "Section A",
-  };
-  List <Map>feeDetail=<Map>[
-    {
-      "no":"1",
-      "month":"July",
-      "amount":"1200",
-      "date":"11/7/2012",
-    },
-    {
-      "no":"2",
-      "month":"August",
-      "amount":"1200",
-      "date":"11/8/2012",
-    },
-    {
-      "no":"3",
-      "month":"September",
-      "amount":"1200",
-      "date":"11/9/2012",
-    },{
-      "no":"3",
-      "month":"September",
-      "amount":"1200",
-      "date":"11/9/2012",
-    },{
-      "no":"3",
-      "month":"September",
-      "amount":"1200",
-      "date":"11/9/2012",
-    },{
-      "no":"3",
-      "month":"September",
-      "amount":"1200",
-      "date":"11/9/2012",
-    },{
-      "no":"3",
-      "month":"September",
-      "amount":"1200",
-      "date":"11/9/2012",
-    },{
-      "no":"3",
-      "month":"September",
-      "amount":"1200",
-      "date":"11/9/2012",
-    },{
-      "no":"3",
-      "month":"September",
-      "amount":"1200",
-      "date":"11/9/2012",
-    },
-    {
-      "no":"4",
-      "month":"October",
-      "amount":"1200",
-      "date":"11/10/2012",
-    }
-  ];
   @override
   Widget build(BuildContext context) {
     double width=MediaQuery.of(context).size.width;
+    //double width=MediaQuery.of(context).size.width;
     double radius=50;
     return Scaffold(
       appBar: AppBar(
         title: Text("Student Detail"),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              height: 320,
-              decoration: BoxDecoration(
-                // color: Colors.teal,
-                // border: Border.all(color: Colors.black38),
-                  borderRadius: BorderRadius.circular(10)
-              ),
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.only(top: 0,bottom: 3),
-              //padding: EdgeInsets.all(10),
-              child: Stack(
-                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    width:width,
-                    height: 150,
-                    child: Image.asset("assets/images/top.jpg",fit: BoxFit.fill,),
-                  ),
-                  Positioned(
-                    left:(width/2)-radius,
-                    top: 150-radius,
-                    child: CircleAvatar(
-                      radius: radius,
-                      backgroundColor: Colors.green,
-                      child: CircleAvatar(
-                        child: Icon(Icons.person),
-                        // backgroundImage:  ,
-                        radius: radius-3,
-                      ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: 210,
+                decoration: BoxDecoration(
+                  // color: Colors.teal,
+                  // border: Border.all(color: Colors.black38),
+                    borderRadius: BorderRadius.circular(10)
+                ),
+                width: MediaQuery.of(context).size.width,
+                //padding: EdgeInsets.all(10),
+                child: Stack(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width:width,
+                      height: 150,
+                      child: Image.asset("assets/images/top.jpg",fit: BoxFit.fill,),
                     ),
-                  ),
-                //  SizedBox(height: 10,),
-                  Positioned(
-                    top: 150+radius+5,
-                    left: width*.07,
-                    child: Card(
-                      child: Container(
-                        width: width*.85,
-                       // color: Colors.white,
-                       // margin: EdgeInsets.only(left: 30),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //Text("Sr.No:"+data["srno"],style: _textStyle,),
-                              Text("Reg no :"+regNo,style: _textStyle,),
-                              Text("Name: "+data["name"],style:_textStyle),
-                              Text("Class: "+presentClass,style: _textStyle,),
-                              Text("Session: "+session,style: _textStyle,),
-                              Text("Education Fee: "+edu_fees+"/month",style: _textStyle,),
-                            ],
-                          ),
+                    Positioned(
+                      top: 110,
+                      left: width*.5-radius,
+                      child: CircleAvatar(
+                        radius: radius,
+                        backgroundColor: Colors.red,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(pic,),
+                          radius: radius-3,
                         ),
                       ),
                     ),
-                  )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(name,style: TextStyle(
+                    color: Colors.teal,
+                    fontWeight: FontWeight.w900,
+                    fontStyle: FontStyle.italic,
+                    fontFamily: 'Open Sans',
+                    fontSize: 40
+                ),),
+              ),
+              Card(
+                child: Container(
+                  width: width*.85,
+                  // color: Colors.white,
+                  // margin: EdgeInsets.only(left: 30),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //Text("Sr.No:"+data["srno"],style: _textStyle,),
+                        Text("Reg no :"+regNo,style: _textStyle,),
+                        SizedBox(height: 5,),
+                        Text("Class: "+presentClass,style: _textStyle,),
+                        SizedBox(height: 5,),
+                        Text("Session: "+session,style: _textStyle,),
+                        SizedBox(height: 5,),
+                        Text("Education Fee: "+edu_fees.toString(),style: _textStyle,),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Wrap(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8,top: 4,bottom: 4),
+                    child: OutlinedButton(onPressed: (){
+                      print(sibling_list);
+                      showSiblings(context);
+                    },
+                      child: Text("Siblings"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8,top: 4,bottom: 4),
+                    child: OutlinedButton(onPressed:()=>showFeeHistory(context),
+                      child: Text("Fee History"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8,top: 4,bottom: 4),
+                    child: OutlinedButton(onPressed: (){
+                      showRecieptHistory(context);
+                    },
+                      child: Text("Fee Receipt history"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8,top: 4,bottom: 4),
+                    child: OutlinedButton(onPressed: (){
+                      showMyDialog("Pending Fee", "Your pending fee is "+total_pending, context);
+                    },
+                      child: Text("Pending Fee"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8,top: 4,bottom: 4),
+                    child: OutlinedButton(onPressed: (){
+                      showOtherFee(context);
+                    },
+                      child: Text("Other Fee"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8,right: 8,top: 4,bottom: 4),
+                    child: OutlinedButton(onPressed: (){
+                      showSiblings(context);
+                    },
+                      child: Text("Submit Fee"),
+                    ),
+                  ),
                 ],
               ),
-            ),
-            Wrap(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton(onPressed: (){
-                    showSiblings(context);
-                  },
-                    child: Text("Siblings"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton(onPressed:()=>showFeeHistory(context),
-                    child: Text("Fee History"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton(onPressed: (){
-                    showRecieptHistory(context);
-                  },
-                    child: Text("Fee Receipt history"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton(onPressed: (){
-                    showMyDialog("Pending Fee", "Your pending fee is "+total_pending, context);
-                  },
-                    child: Text("Pending Fee"),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: OutlinedButton(onPressed: (){
-                    showSiblings(context);
-                  },
-                    child: Text("Submit Fee"),
-                  ),
-                ),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -266,7 +202,7 @@ class _StudentAllinformationState extends State<StudentAllinformation> {
           return SafeArea(
             child: Container(
               margin: EdgeInsets.only(top: 10),
-              child: ListView.builder(
+              child: (sibling_list.isNotEmpty)?ListView.builder(
                 itemCount: sibling_list.length,
                 itemBuilder: ((BuildContext context,int index)
           {
@@ -278,29 +214,29 @@ class _StudentAllinformationState extends State<StudentAllinformation> {
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("SrNo: "+sibling_list[index]["srno"]),
+                    Text("SrNo: "+sibling_list[index]["srno"].toString()),
                     SizedBox(height: 5,),
-                    Text("RegNo: "+sibling_list[index]["regno"]),
+                    Text("RegNo: "+sibling_list[index]["regno"].toString()),
                     SizedBox(height: 5,),
-                    Text("Name: "+sibling_list[index]["name"]),
+                    Text("Name: "+sibling_list[index]["name"].toString()),
                     SizedBox(height: 5,),
-                    Text("Father: "+sibling_list[index]["fname"]),
+                    Text("Father: "+sibling_list[index]["fname"].toString()),
                     SizedBox(height: 5,),
-                    Text("Mother: "+sibling_list[index]["mname"]),
+                    Text("Mother: "+sibling_list[index]["mname"].toString()),
                     SizedBox(height: 5,),
-                    Text("Class: "+sibling_list[index]["class"]),
+                    Text("Class: "+sibling_list[index]["class"].toString()),
                     SizedBox(height: 5,),
-                    Text("Section: "+sibling_list[index]["section"]),
+                    Text("Section: "+sibling_list[index]["section"].toString()),
                     SizedBox(height: 5,),
-                    Text("Father: "+sibling_list[index]["fname"]),
-                    SizedBox(height: 5,),
-                    Text("Fee/month: "+sibling_list[index]["edufees"]),
+                    Text("Fee/month: "+sibling_list[index]["edufees"].toString()),
                     SizedBox(height: 10,
                     child: Divider(color: Colors.red,thickness: 2,),),
                   ],
                 )
             );
-          }))
+          })):Padding(
+            padding: const EdgeInsets.only(bottom: 128.0,top: 50,left: 50),
+            child: Text("No Record"),)
           ));
         });
   }
@@ -313,25 +249,25 @@ class _StudentAllinformationState extends State<StudentAllinformation> {
           return SafeArea(
               child: Container(
                   margin: EdgeInsets.only(top: 10),
-                  child: ListView.builder(
+                  child: (fees_history.isNotEmpty)?ListView.builder(
                       itemCount: fees_history.length,
                       itemBuilder: ((BuildContext context,int index)
                       {
                         return ListTile(
-                            leading: Icon(Icons.person),
+                            leading: Icon(Icons.account_balance_wallet_rounded),
                             // trailing: Text("GFG",
                             //   style: TextStyle(
                             //       color: Colors.green, fontSize: 15),),
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Class: "+fees_history[index]["class"]),
+                                Text("Class: "+fees_history[index]["class"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Season: "+fees_history[index]["ses"]),
+                                Text("Season: "+fees_history[index]["ses"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Submitted Fee: "+fees_history[index]["submit_fees"]),
+                                Text("Submitted Fee: "+fees_history[index]["submit_fees"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Education Fee: "+fees_history[index]["edu_fees"]),
+                                Text("Education Fee: "+fees_history[index]["edu_fees"].toString()),
                                 SizedBox(height: 5,),
                                 Text("Total Fee: "+fees_history[index]["total_fees"].toString()),
                                 SizedBox(height: 5,),
@@ -342,7 +278,9 @@ class _StudentAllinformationState extends State<StudentAllinformation> {
                               ],
                             )
                         );
-                      }))
+                      })):Padding(
+              padding: const EdgeInsets.only(bottom: 128.0,top: 50,left: 50),
+            child: Text("No Record"),)
               ));
         });
   }
@@ -355,38 +293,82 @@ class _StudentAllinformationState extends State<StudentAllinformation> {
           return SafeArea(
               child: Container(
                   margin: EdgeInsets.only(top: 10),
-                  child: ListView.builder(
+                  child: (recipt_list.isNotEmpty)?ListView.builder(
                       itemCount: recipt_list.length,
                       itemBuilder: ((BuildContext context,int index)
                       {
                         return ListTile(
-                            leading: Icon(Icons.person),
+                            leading: Icon(Icons.account_balance_wallet_outlined),
                             // trailing: Text("GFG",
                             //   style: TextStyle(
                             //       color: Colors.green, fontSize: 15),),
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("SrNo: "+recipt_list[index]["sno"]),
+                                Text("SrNo: "+recipt_list[index]["sno"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Season: "+recipt_list[index]["ses"]),
+                                Text("Season: "+recipt_list[index]["ses"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Class: "+recipt_list[index]["class"]),
+                                Text("Class: "+recipt_list[index]["class"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Date/Time: "+recipt_list[index]["dor"]),
+                                Text("Date/Time: "+recipt_list[index]["dor"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Month Fee: "+recipt_list[index]["months_fees"]),
+                                Text("Month Fee: "+recipt_list[index]["months_fees"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Education Fee: "+recipt_list[index]["educational_fees"]),
+                                Text("Education Fee: "+recipt_list[index]["educational_fees"].toString()),
                                 SizedBox(height: 5,),
-                                Text("Remark: "+recipt_list[index]["remark"]),
+                                Text("Remark: "+recipt_list[index]["remark"].toString()),
                                 SizedBox(height: 5,),
                                 SizedBox(height: 10,
                                   child: Divider(color: Colors.red,thickness: 2,),),
                               ],
                             )
                         );
-                      }))
+                      })):Padding(
+              padding: const EdgeInsets.only(bottom: 128.0,top: 50,left: 50),
+            child: Text("No Record"),)
+              ));
+        });
+  }
+  void showOtherFee(context) {
+    print(other_item_fees);
+    showModalBottomSheet(
+      //isScrollControlled:true,
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+              child: Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: (other_item_fees.isNotEmpty)?ListView.builder(
+                      itemCount: other_item_fees.length,
+                      itemBuilder: ((BuildContext context,int index)
+                      {
+                        return ListTile(
+                            leading: Icon(Icons.list),
+                            // trailing: Text("GFG",
+                            //   style: TextStyle(
+                            //       color: Colors.green, fontSize: 15),),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("SrNo: "+other_item_fees[index]["recno"].toString()),
+                                SizedBox(height: 5,),
+                                Text("Items: "+other_item_fees[index]["items"].toString()),
+                                SizedBox(height: 5,),
+                                Text("Item Fee: "+other_item_fees[index]["item_fees"].toString()),
+                                SizedBox(height: 5,),
+                                Text("Remark: "+other_item_fees[index]["remark"].toString()),
+                                SizedBox(height: 5,),
+                                Text("Date: "+other_item_fees[index]["dor"].toString()),
+                                SizedBox(height: 5,),
+                                SizedBox(height: 10,
+                                  child: Divider(color: Colors.red,thickness: 2,),),
+                              ],
+                            )
+                        );
+                      })):Padding(
+                        padding: const EdgeInsets.only(bottom: 128.0,top: 50,left: 50),
+                        child: Text("No Record"),)
               ));
         });
   }

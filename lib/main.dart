@@ -5,6 +5,7 @@ import 'package:student_portal_app/Splashpage/SplashPage.dart';
 
 import 'HomePage/Admin_Portal/Fees_Card/upload_Expenses_Request/upload_expenses_request.dart';
 import 'HomePage/Admin_Portal/Student_card/Student_search_card/StudentSearchCard.dart';
+import 'HomePage/Admin_Portal/Student_card/Student_search_card/studentAlldetail/studentDetail.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,8 +22,8 @@ class MyApp extends StatelessWidget {
       )
     ),
       debugShowCheckedModeBanner: false,
-      // home: SplashPage(),
-      home: StudentSearchDetails(),
+      home: SplashPage(),
+      // home: FacultyLogIn()
     );
   }
 }
